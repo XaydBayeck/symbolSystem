@@ -26,6 +26,8 @@ source-repository head
 library
   exposed-modules:
       Lib
+      SymbolSystem.ExprParser
+      SymbolSystem.ExprParserMonad
   other-modules:
       Paths_symbolSystem
   hs-source-dirs:
