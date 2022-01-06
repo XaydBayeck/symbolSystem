@@ -1,9 +1,12 @@
+{-# LANGUAGE LambdaCase #-}
+
 module SymbolSystem.ExprParserMonad where
 
 type Input = String
 
 data ParseErr
   = UnexpectedEof
+  | EmptyInput
   | ExepectedEof Input
   | UnexpectedChar Char
   | UnexpectedString String
@@ -16,6 +19,22 @@ instance Functor ParseResult where
   fmap f (Res i a) = Res i (f a)
 
 newtype Parser a = Prs (Input -> ParseResult a)
+
+instance Functor Parser where
+  fmap f (Prs p) = Prs (fmap f . p)
+
+instance Applicative Parser where
+  pure a = Prs $ \input -> Res input a
+  (<*>) pf pa = (>>=) pf $ \f -> fmap f pa
+
+{-- `>>=` 的功能
+`p`若解析成功得到`Res i a`则根据上一次解析结果`a`
+按照生成规则`f`
+生成一个新的解析器`f a`用来解析剩余未解析部分`i`--}
+instance Monad Parser where
+  (Prs p) >>= f = Prs $ \input -> case p input of
+    (Res i a) -> parse (f a) i
+    (Err pe) -> Err pe
 
 parse :: Parser a -> Input -> ParseResult a
 parse (Prs p) = p
@@ -32,15 +51,18 @@ satisfy f = (>>=) character $ \a ->
     then pure a
     else Prs $ \_ -> Err $ UnexpectedChar a
 
-instance Functor Parser where
-  fmap f (Prs p) = Prs (fmap f . p)
+(<|>) :: Parser a -> Parser a -> Parser a
+(<|>) (Prs pa) (Prs alt) = Prs $ \input ->
+  let x = pa input
+   in if isErroResult x then alt input else x
+  where
+    isErroResult (Err _) = True
+    isErroResult (Res _ _) = False
 
-instance Applicative Parser where
-  pure a = Prs $ \input -> Res input a
-  (<*>) (Prs f) p = _todo
+anyChar :: Parser Char
+anyChar = Prs $ \case
+  [] -> Err EmptyInput
+  (c : cs) -> Res cs c
 
-instance Monad Parser where
-  (>>=) (Prs p) f = Prs $ \input -> onResult (p input) (\input1 a -> parse (f a) input1)
-    where
-      onResult (Res i a) k = k i a
-      onResult (Err pe) _ = Err pe
+(|>) :: a -> (a -> b) -> b
+a |> f = f a
