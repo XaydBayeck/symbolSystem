@@ -1,4 +1,10 @@
-module SymbolSystem.ExprParser where
+module SymbolSystem.ExprParser
+  ( opP,
+    variable,
+    exprP,
+    exprsP,
+  )
+where
 
 import Control.Applicative (liftA2, (<|>))
 import Data.Char (isAlpha, isAlphaNum, isDigit, isSpace)
@@ -75,13 +81,13 @@ unspecial = satisfy $ not . (`elem` [' ', '\t', '(', ')', '{', '}', '[', ']'])
 {-- Expression Parser --}
 
 opP :: Parser Operate
-opP = Op <$> between (is '(') (many unspecial) space
+opP = Op <$> between (is '(') (many1 unspecial) space
 
 variable :: Parser Symbol
-variable = Sym <$> many unspecial
+variable = Sym <$> many1 unspecial
 
 exprP :: Parser Expression
-exprP = Variable <$> variable <|> Expr <$> opP <*> exprsP
+exprP = (Variable <$> variable) <|> (Expr <$> opP <*> exprsP <* is ')')
 
 exprsP :: Parser (StrictList Expression)
-exprsP = exprP `sepBy1'` many space
+exprsP = exprP `sepBy1'` many1 space

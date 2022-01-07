@@ -11,7 +11,7 @@ newtype Operate = Op String deriving (Eq)
 instance Show Operate where
   show (Op op) = op
 
-data Expression = Expr Operate Exprs | Variable Symbol
+data Expression = Expr {op :: Operate, exprs :: Exprs} | Variable {var :: Symbol}
 
 {-- This List has at least one element --}
 data StrictList a = Single a | Cons a (StrictList a)

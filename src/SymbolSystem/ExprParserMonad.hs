@@ -1,18 +1,6 @@
 {-# LANGUAGE LambdaCase #-}
 
-module SymbolSystem.ExprParserMonad
-  ( ParseResult,
-    Parser,
-    parse,
-    (|>),
-    character,
-    satisfy,
-    (<|>),
-    fmap,
-    (<*>),
-    (>>=),
-  )
-where
+module SymbolSystem.ExprParserMonad where
 
 import Control.Applicative (Alternative (empty, (<|>)))
 import Control.Monad (MonadPlus)
