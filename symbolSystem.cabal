@@ -27,8 +27,10 @@ library
   exposed-modules:
       Lib
       SymbolSystem.ExprData
-      SymbolSystem.ExprParser
       SymbolSystem.ExprParserMonad
+      SymbolSystem.ParserGenerator
+      SymbolSystem.ParserMonad
+      SymbolSystem.TextParser
   other-modules:
       Paths_symbolSystem
   hs-source-dirs:

@@ -1,6 +1,5 @@
-{-# LANGUAGE LambdaCase #-}
-
-module SymbolSystem.ExprParserMonad where
+module SymbolSystem.ParserMonad
+where
 
 import Control.Applicative (Alternative (empty, (<|>)))
 import Control.Monad (MonadPlus)
@@ -50,19 +49,3 @@ instance Alternative Parser where
       isErroResult (Res _ _) = False
 
 instance MonadPlus Parser
-
-(|>) :: Parser a -> Parser a -> Parser a
-(Prs p) |> (Prs g) = Prs $ \i0 -> case p i0 of
-  (Res _ _) -> g i0
-  e@(Err _) -> e
-
-character :: Parser Char
-character = Prs $ \case
-  (c : cs) -> Res cs c
-  _ -> Err UnexpectedEof
-
-satisfy :: (Char -> Bool) -> Parser Char
-satisfy f = (>>=) character $ \a ->
-  if f a
-    then pure a
-    else Prs $ \_ -> Err $ UnexpectedChar a
