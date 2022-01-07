@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import SymbolSystem
 
 main :: IO ()
 main = print "Hello"

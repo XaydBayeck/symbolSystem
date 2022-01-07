@@ -1,4 +1,4 @@
-import Lib
+import SymbolSystem
 import Test.Hspec
 import Test.QuickCheck
 
