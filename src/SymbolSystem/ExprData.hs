@@ -14,14 +14,14 @@ instance Show Operate where
 data Expression = Expr {op :: Operate, exprs :: Exprs} | Variable {var :: Symbol}
 
 {-- This List has at least one element --}
-data StrictList a = Single a | Cons a (StrictList a)
+data StrictList a = Single a | (:>) a (StrictList a)
 
 instance Show a => Show (StrictList a) where
   show (Single x) = show x
-  show (Cons x xs) = show x ++ " : " ++ show xs
+  show (x :> xs) = show x ++ " :> " ++ show xs
 
-(.>) :: a -> StrictList a -> StrictList a
-(.>) = Cons
+cons :: a -> StrictList a -> StrictList a
+cons = (:>)
 
 type Exprs = StrictList Expression
 
@@ -31,12 +31,12 @@ instance Show Expression where
     where
       exprs = case es of
         Single e -> show e
-        Cons e es -> helper (show e) es
+        (e :> es) -> helper (show e) es
           where
             helper res (Single e) = res ++ " " ++ show e
-            helper res (Cons e es) = helper (res ++ " " ++ show e) es
+            helper res (e :> es) = helper (res ++ " " ++ show e) es
 
 fromList :: [a] -> StrictList a
 fromList [] = error "list cannot be empty"
 fromList [x] = Single x
-fromList (x : xs) = Cons x $ fromList xs
+fromList (x : xs) = cons x $ fromList xs

@@ -7,13 +7,13 @@ import Test.QuickCheck
 testExpr :: [Expression]
 testExpr =
   [ Variable $ Sym "a",
-    Expr (Op "+") $ Cons (Variable $ Sym "1") $ Single $ Variable $ Sym "3",
-    Expr (Op "*") $ Cons aPlusb $ Cons xTimy $ Single negz
+    Expr (Op "+") $ cons (Variable $ Sym "1") $ Single $ Variable $ Sym "3",
+    Expr (Op "*") $ cons aPlusb $ cons xTimy $ Single negz
   ]
 
-aPlusb = Expr (Op "+") $ Cons (Variable $ Sym "a") $ Single $ Variable $ Sym "b"
+aPlusb = Expr (Op "+") $ cons (Variable $ Sym "a") $ Single $ Variable $ Sym "b"
 
-xTimy = Expr (Op "*") $ Cons (Variable $ Sym "x") $ Single $ Variable $ Sym "y"
+xTimy = Expr (Op "*") $ cons (Variable $ Sym "x") $ Single $ Variable $ Sym "y"
 
 negz = Expr (Op "-") $ Single $ Variable $ Sym "z"
 
@@ -32,4 +32,4 @@ main = hspec $ do
       let expr1 = item $ parse exprP "(* (+ a b) (* x y) (- z))"
        in show expr1 `shouldBe` "(* (+ a b) (* x y) (- z))"
       let exprs1 = item $ parse exprsP "(+ a b) (* x y) (- z)"
-       in show exprs1 `shouldBe` "(+ a b) : (* x y) : (- z)"
+       in show exprs1 `shouldBe` "(+ a b) :> (* x y) :> (- z)"

@@ -2,7 +2,6 @@ module SymbolSystem.ParserMonad where
 
 import Control.Applicative (Alternative (empty, (<|>)))
 import Control.Monad (MonadPlus)
-import SymbolSystem.ExprData (StrictList (Cons, Single))
 
 type Input = String
 
