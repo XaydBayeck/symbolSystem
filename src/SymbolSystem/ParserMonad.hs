@@ -1,5 +1,4 @@
-module SymbolSystem.ParserMonad
-where
+module SymbolSystem.ParserMonad where
 
 import Control.Applicative (Alternative (empty, (<|>)))
 import Control.Monad (MonadPlus)
@@ -15,7 +14,10 @@ data ParseErr
   | UnexpectedString String
   deriving (Eq, Show)
 
-data ParseResult a = Err ParseErr | Res Input a deriving (Eq, Show)
+data ParseResult a
+  = Err {error :: ParseErr}
+  | Res {input :: Input, item :: a}
+  deriving (Eq, Show)
 
 instance Functor ParseResult where
   fmap _ (Err perr) = Err perr

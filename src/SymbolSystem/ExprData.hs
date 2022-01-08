@@ -16,6 +16,13 @@ data Expression = Expr {op :: Operate, exprs :: Exprs} | Variable {var :: Symbol
 {-- This List has at least one element --}
 data StrictList a = Single a | Cons a (StrictList a)
 
+instance Show a => Show (StrictList a) where
+  show (Single x) = show x
+  show (Cons x xs) = show x ++ " : " ++ show xs
+
+(.>) :: a -> StrictList a -> StrictList a
+(.>) = Cons
+
 type Exprs = StrictList Expression
 
 instance Show Expression where

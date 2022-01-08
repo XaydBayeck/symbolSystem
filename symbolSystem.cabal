@@ -6,11 +6,11 @@ cabal-version: 1.12
 
 name:           symbolSystem
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/symbolSystem#readme>
-homepage:       https://github.com/githubuser/symbolSystem#readme
-bug-reports:    https://github.com/githubuser/symbolSystem/issues
-author:         Author name here
-maintainer:     example@example.com
+description:    Please see the README on GitHub at <https://github.com/XaydBayeck/symbolSystem#readme>
+homepage:       https://github.com/XaydBayeck/symbolSystem#readme
+bug-reports:    https://github.com/XaydBayeck/symbolSystem/issues
+author:         Sid<SidBayeck@outlook.com>
+maintainer:     SidBayeck@outlook.com
 copyright:      2022 Author name here
 license:        BSD3
 license-file:   LICENSE
@@ -21,13 +21,13 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/symbolSystem
+  location: https://github.com/XaydBayeck/symbolSystem
 
 library
   exposed-modules:
-      Lib
+      SymbolSystem
       SymbolSystem.ExprData
-      SymbolSystem.ExprParserMonad
+      SymbolSystem.ExprParser
       SymbolSystem.ParserGenerator
       SymbolSystem.ParserMonad
       SymbolSystem.TextParser
