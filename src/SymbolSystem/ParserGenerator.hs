@@ -44,3 +44,9 @@ sepBy1 pa pb = do
 
 sepBy1' :: Parser a -> Parser b -> Parser (StrictList a)
 sepBy1' pa pb = fromList <$> sepBy1 pa pb
+
+times :: Integer -> Parser a -> Parser [a]
+times n pa
+  | n < 0 = error "n cannot little than 0"
+  | n == 0 = pure []
+  | otherwise = (:) <$> pa <*> times (n - 1) pa

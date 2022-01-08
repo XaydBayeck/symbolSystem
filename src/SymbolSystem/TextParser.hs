@@ -2,13 +2,14 @@
 
 module SymbolSystem.TextParser where
 
-import Data.Char (isAlpha, isDigit, isSpace)
-import SymbolSystem.ParserGenerator (many, seqParser)
+import Data.Char (isAlpha, isDigit, isNumber, isSpace)
+import SymbolSystem.ParserGenerator (many, seqParser, times)
 import SymbolSystem.ParserMonad
   ( ParseErr (UnexpectedChar, UnexpectedEof),
     ParseResult (Err, Res),
     Parser (Prs),
   )
+import SymbolSystem.Utils ((<+>))
 
 {-- String Parser --}
 
@@ -50,3 +51,7 @@ unspace = satisfy $ not . (`elem` [' ', '\t'])
 -- | Character is not `' ', '/\t', '(', ')', '{', '}', '[', ']'`
 unspecial :: Parser Char
 unspecial = satisfy $ not . (`elem` [' ', '\t', '(', ')', '{', '}', '[', ']'])
+
+-- | a variable can not cotaine special char and number at head
+varP :: Parser String
+varP = times 1 (satisfy $ not . isNumber) <+> many unspecial

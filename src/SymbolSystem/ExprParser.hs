@@ -7,15 +7,17 @@ module SymbolSystem.ExprParser
 where
 
 import Control.Applicative (Alternative ((<|>)))
+import Data.Char
 import SymbolSystem.ExprData
   ( Expression (Expr, Variable),
     Operate (..),
     StrictList,
     Symbol (..),
   )
-import SymbolSystem.ParserGenerator (between, many1, sepBy1')
+import SymbolSystem.ParserGenerator (between, many, many1, sepBy1', times)
 import SymbolSystem.ParserMonad (Parser)
-import SymbolSystem.TextParser (is, space, unspecial)
+import SymbolSystem.TextParser (is, satisfy, space, unspecial, varP)
+import SymbolSystem.Utils ((<+>))
 
 {-- Expression Parser --}
 
@@ -23,7 +25,7 @@ opP :: Parser Operate
 opP = Op <$> between (is '(') (many1 unspecial) space
 
 variable :: Parser Symbol
-variable = Sym <$> many1 unspecial
+variable = Sym <$> times 1 (satisfy $ not . isNumber) <+> many unspecial
 
 exprP :: Parser Expression
 exprP = (Variable <$> variable) <|> (Expr <$> opP <*> exprsP <* is ')')
