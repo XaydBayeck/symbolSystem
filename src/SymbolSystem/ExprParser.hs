@@ -28,7 +28,7 @@ variable :: Parser Symbol
 variable = Sym <$> times 1 (satisfy $ not . isNumber) <+> many unspecial
 
 exprP :: Parser Expression
-exprP = (Variable <$> variable) <|> (Expr <$> opP <*> exprsP <* is ')')
+exprP = (Expr <$> opP <*> exprsP <* is ')') <|> (Variable <$> variable)
 
 exprsP :: Parser (StrictList Expression)
 exprsP = exprP `sepBy1'` many1 space

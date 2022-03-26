@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Lib
       SymbolSystem
       SymbolSystem.ExprData
       SymbolSystem.ExprParser
