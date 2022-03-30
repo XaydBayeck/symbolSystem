@@ -27,6 +27,7 @@ library
   exposed-modules:
       Lib
       SymbolSystem
+      SymbolSystem.DiffRules
       SymbolSystem.ExprData
       SymbolSystem.ExprParser
       SymbolSystem.ParserGenerator

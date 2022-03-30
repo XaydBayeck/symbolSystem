@@ -1,3 +1,4 @@
+import SymbolSystem.DiffRules
 import SymbolSystem.ExprData
 import SymbolSystem.ExprParser
 import SymbolSystem.ParserMonad
@@ -17,6 +18,8 @@ xTimy = Expr (Op "*") $ cons (Variable $ Sym "x") $ Single $ Variable $ Sym "y"
 
 negz = Expr (Op "-") $ Single $ Variable $ Sym "z"
 
+x = Sym "x"
+
 main :: IO ()
 main = hspec $ do
   describe "symbolSystem.ExprData" $ do
@@ -33,3 +36,14 @@ main = hspec $ do
        in show expr1 `shouldBe` "(* (+ a b) (* x y) (- z))"
       let exprs1 = item $ parse exprsP "(+ a b) (* x y) (- z)"
        in show exprs1 `shouldBe` "(+ a b) :> (* x y) :> (- z)"
+  describe "SymbolSystem.DiffRules" $ do
+    it "test the rules of differential" $ do
+      let expr1 = item $ parse exprP "u"
+          diffe1 = diff expr1 x
+       in show diffe1 `shouldBe` "0"
+      let expr = item $ parse exprP "x"
+          diffe = diff expr x
+       in show diffe `shouldBe` "1"
+      let expr1 = item $ parse exprP "(+ u x)"
+          diffe = diff expr1 x
+       in show diffe `shouldBe` "(+ 1 0)"
