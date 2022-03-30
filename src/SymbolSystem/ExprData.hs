@@ -13,7 +13,7 @@ instance Show Operate where
 
 data Expression = Expr {op :: Operate, exprs :: Exprs} | Variable {var :: Symbol}
 
-{-- This List has at least one element --}
+-- | This List has at least one element
 data StrictList a = Single a | (:>) a (StrictList a)
 
 instance Show a => Show (StrictList a) where
@@ -40,3 +40,7 @@ fromList :: [a] -> StrictList a
 fromList [] = error "list cannot be empty"
 fromList [x] = Single x
 fromList (x : xs) = cons x $ fromList xs
+
+toList :: StrictList a -> [a]
+toList (Single x) = [x]
+toList (x :> xs) = x : toList xs

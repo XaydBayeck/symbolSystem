@@ -9,7 +9,7 @@ import SymbolSystem.ParserMonad
     ParseResult (Err, Res),
     Parser (Prs),
   )
-import SymbolSystem.Utils ((<+>))
+import SymbolSystem.Utils ((<++>))
 
 {-- String Parser --}
 
@@ -54,4 +54,4 @@ unspecial = satisfy $ not . (`elem` [' ', '\t', '(', ')', '{', '}', '[', ']'])
 
 -- | a variable can not cotaine special char and number at head
 varP :: Parser String
-varP = times 1 (satisfy $ not . isNumber) <+> many unspecial
+varP = times 1 (satisfy $ not . isNumber) <++> many unspecial

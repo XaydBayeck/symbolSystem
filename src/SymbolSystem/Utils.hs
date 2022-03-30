@@ -5,8 +5,8 @@ module SymbolSystem.Utils where
 (|>) :: a -> (a -> b) -> b
 x |> f = f x
 
-(<+>) :: Monad m => m [a] -> m [a] -> m [a]
-ma <+> mb = do
+(<++>) :: Monad m => m [a] -> m [a] -> m [a]
+ma <++> mb = do
   x1 <- ma
   x2 <- mb
   return $ x1 ++ x2

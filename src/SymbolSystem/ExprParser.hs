@@ -17,7 +17,7 @@ import SymbolSystem.ExprData
 import SymbolSystem.ParserGenerator (between, many, many1, sepBy1', times)
 import SymbolSystem.ParserMonad (Parser)
 import SymbolSystem.TextParser (is, satisfy, space, unspecial, varP)
-import SymbolSystem.Utils ((<+>))
+import SymbolSystem.Utils ((<++>))
 
 {-- Expression Parser --}
 
@@ -25,7 +25,7 @@ opP :: Parser Operate
 opP = Op <$> between (is '(') (many1 unspecial) space
 
 variable :: Parser Symbol
-variable = Sym <$> times 1 (satisfy $ not . isNumber) <+> many unspecial
+variable = Sym <$> times 1 (satisfy $ not . isNumber) <++> many unspecial
 
 exprP :: Parser Expression
 exprP = (Expr <$> opP <*> exprsP <* is ')') <|> (Variable <$> variable)
